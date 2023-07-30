@@ -2,6 +2,16 @@
 
 struct Global_Timer* global_timer = NULL;
 
+void alloc_global_timer(enum TIME_RESOLUTION resolution){
+
+    global_timer = (struct Global_Timer *)malloc(sizeof(struct Global_Timer));
+    global_timer->num_timers =0;
+    global_timer->timers =NULL;
+    global_timer->total_time =0.0;
+    global_timer->resolution = resolution;
+    global_timer->CONSTANT_1 = global_timer->resolution;
+    global_timer->CONSTANT_2 = global_timer->resolution/pow(10,9);
+}
 
 void alloc_timer(char *name) {
 
@@ -14,62 +24,32 @@ void alloc_timer(char *name) {
     timer->elapsed_time = 0;
     timer->time_mean = 0.0;
     timer->count = 0;
-    timer->CONSTANT_1 = global_timer->resolution;
-    timer->CONSTANT_2 = global_timer->resolution/pow(10,9);
 }
 
 void watch_update(struct Timer * timer){
-    
-    clock_gettime(CLOCK_MONOTONIC_RAW, &timer->start_time);
-    return;
-    //timer->elapsed_time = (timer->current_time.tv_sec - timer->start_time.tv_sec) * global_timer->resolution;
-    
-    
+
+    clock_gettime(CLOCK_MONOTONIC_RAW, &timer->start_time);    
 }
 
-void stop_watch_(struct Timer * timer){
-    //printf("RESOLUTION: %f\n",timer->CONSTANT_2);
+void watch_stop(struct Timer * timer){
+
     clock_gettime(CLOCK_MONOTONIC_RAW, &timer->current_time);
-    timer->elapsed_time += (timer->current_time.tv_sec - timer->start_time.tv_sec) * timer->CONSTANT_1 + (timer->current_time.tv_nsec - timer->start_time.tv_nsec)* timer->CONSTANT_2;
+    timer->elapsed_time += (timer->current_time.tv_sec - timer->start_time.tv_sec) * global_timer->CONSTANT_1\
+     + (timer->current_time.tv_nsec - timer->start_time.tv_nsec)* global_timer->CONSTANT_2;
     timer->count++;
-    
 }
-
-void stop_watch(char * name){
-    
-   int i;
-    for (i = 0; i < global_timer->num_timers; i++) {
-        if (strcmp(global_timer->timers[i].name, name) == 0){
-            
-            stop_watch_(&global_timer->timers[i]);
-            return;
-        }
-    }
-}
-
-
-void alloc_global_timer(enum TIME_RESOLUTION resolution){
-
-    global_timer = (struct Global_Timer *)malloc(sizeof(struct Global_Timer));
-    global_timer->num_timers =0;
-    global_timer->timers =NULL;
-    global_timer->total_time =0.0;
-    global_timer->resolution = resolution;
-}
-
 
 
 void watch(char * name){
-    
-    int i;
-    for (i = 0; i < global_timer->num_timers; i++) {
+    // Update the timer if it is initialized
+    for (int i = 0; i < global_timer->num_timers; i++) {
         if (strcmp(global_timer->timers[i].name, name) == 0){
             
             watch_update(&global_timer->timers[i]);
             return;
         }
     }
-    
+    // Initalize the timer if not initialized before
     alloc_timer(name);
     return;
 }
