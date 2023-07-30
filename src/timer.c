@@ -1,4 +1,4 @@
-#include "timers.h"
+#include "timer.h"
 
 
 void alloc_timer(struct Global_Timer *global_timer, char *name) {
@@ -51,7 +51,7 @@ void watch(struct Global_Timer * global_timer,char * name){
 void free_global_timer(struct Global_Timer * global_timer){
 
     for (int i=0;i<global_timer->num_timers;i++){
-        free(global_timer->timers->name);
+        free(global_timer->timers[i].name);
     }
     free(global_timer->timers);
 
