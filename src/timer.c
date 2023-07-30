@@ -1,7 +1,9 @@
 #include "timer.h"
 
+struct Global_Timer* global_timer = NULL;
 
-void alloc_timer(struct Global_Timer *global_timer, char *name) {
+
+void alloc_timer(char *name) {
     global_timer->num_timers++;
     global_timer->timers = (struct Timer*) realloc(global_timer->timers, global_timer->num_timers * sizeof(struct Timer));
     struct Timer *timer = &(global_timer->timers[global_timer->num_timers - 1]);
@@ -23,32 +25,32 @@ void watch_update(struct Timer * timer){
     timer->time_mean = timer->total_elapsed_time/timer->count;
 }
 
-struct Global_Timer * alloc_global_timer(){
+void alloc_global_timer(){
 
-    struct Global_Timer * global_timer = (struct Global_Timer *)malloc(sizeof(struct Global_Timer));
+    global_timer = (struct Global_Timer *)malloc(sizeof(struct Global_Timer));
     global_timer->num_timers =0;
     global_timer->timers =NULL;
     global_timer->total_time =0.0;
-    return global_timer;
 }
 
 
 
-void watch(struct Global_Timer * global_timer,char * name){
-
+void watch(char * name){
+    
     int i;
     for (i = 0; i < global_timer->num_timers; i++) {
         if (strcmp(global_timer->timers[i].name, name) == 0){
+            
             watch_update(&global_timer->timers[i]);
             return;
         }
     }
-
-    alloc_timer(global_timer,name);
+    
+    alloc_timer(name);
     
 }
 
-void free_global_timer(struct Global_Timer * global_timer){
+void free_global_timer(){
 
     for (int i=0;i<global_timer->num_timers;i++){
         free(global_timer->timers[i].name);
@@ -58,7 +60,7 @@ void free_global_timer(struct Global_Timer * global_timer){
     free(global_timer);
 }
 
-void print_statistics(struct Global_Timer * global_timer){
+void print_statistics(){
 
     for (int i=0;i<global_timer->num_timers;i++){
         printf("%s: \n",global_timer->timers[i].name);
@@ -66,4 +68,9 @@ void print_statistics(struct Global_Timer * global_timer){
         printf("Average Time: %f\n",global_timer->timers[i].time_mean);
         printf("Count: %d\n", global_timer->timers[i].count);
     }
+}
+
+void exit_functions(){
+    print_statistics();
+    free_global_timer();
 }

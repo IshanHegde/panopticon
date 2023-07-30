@@ -1,22 +1,21 @@
+#ifndef TIMER_H
+#define TIMER_H
 #include <time.h>
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
+
+
 struct Timer;
 
-#define WATCH_START(t) (t).start_time = clock()
+struct Global_Timer{
 
-#define WATCH_STOP(t) (t).elapsed_time = (double)(clock() - (t).start_time) / CLOCKS_PER_SEC
+    struct Timer * timers;
+    double total_time;
+    size_t num_timers;
+};
 
-#define WATCH_RESET(t) (t).elapsed_time = 0; (t).start_time = 0
-
-//#define WATCH(name) t = alloc_timer(name);
-
-//#define PROGRAM_TIMER(name) struct Global_Timer* timer = alloc_global_timer();
-
-//#define PROGRAM_TIMER::WATCH(name) timer.
-
-#define WATCH_UPDATE(t) (t).total_elapsed_time += (t).elapsed_time; (t).count++; (t).time_mean = (t).total_elapsed_time /(t).count;
+extern struct Global_Timer* global_timer;
 
 struct Timer{
     clock_t start_time;
@@ -31,19 +30,21 @@ struct Timer{
 
 void watch_update(struct Timer * timer);
 
-struct Global_Timer{
 
-    struct Timer * timers;
-    double total_time;
-    size_t num_timers;
-};
+void alloc_timer(char * name);
 
-void alloc_timer(struct Global_Timer * global_timer, char * name);
+void alloc_global_timer();
 
-struct Global_Timer * alloc_global_timer();
+void watch(char * name);
 
-void watch(struct Global_Timer * global_timer,char * name);
+void free_global_timer();
 
-void free_global_timer(struct Global_Timer * global_timer);
+void print_statistics();
 
-void print_statistics(struct Global_Timer * global_timer);
+void exit_functions();
+
+#define GLOBAL_TIMER() \
+    alloc_global_timer(); \
+    atexit(exit_functions);\
+
+#endif 
