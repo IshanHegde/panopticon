@@ -8,6 +8,10 @@
 #include <stdint.h>
 #include <math.h>
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
 
 #define WATCH(name) watch(name);
 
@@ -69,5 +73,9 @@ void exit_functions();
 #define GLOBAL_TIMER(resolution) \
     alloc_global_timer(resolution); \
     atexit(exit_functions);\
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif 
