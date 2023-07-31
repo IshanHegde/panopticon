@@ -38,8 +38,6 @@ struct Global_Timer{
     double total_time;
     size_t num_timers;
     enum TIME_RESOLUTION resolution;
-    uint64_t CONSTANT_1;
-    double CONSTANT_2;
 };
 
 extern struct Global_Timer* global_timer;

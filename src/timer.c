@@ -9,8 +9,6 @@ void alloc_global_timer(enum TIME_RESOLUTION resolution){
     global_timer->timers =NULL;
     global_timer->total_time =0.0;
     global_timer->resolution = resolution;
-    global_timer->CONSTANT_1 = global_timer->resolution;
-    global_timer->CONSTANT_2 = global_timer->resolution/pow(10,9);
 }
 
 void alloc_timer(char *name) {
@@ -34,8 +32,8 @@ void watch_update(struct Timer * timer){
 void watch_stop(struct Timer * timer){
 
     clock_gettime(CLOCK_MONOTONIC_RAW, &timer->current_time);
-    timer->elapsed_time += (timer->current_time.tv_sec - timer->start_time.tv_sec) * global_timer->CONSTANT_1\
-     + (timer->current_time.tv_nsec - timer->start_time.tv_nsec)* global_timer->CONSTANT_2;
+    timer->elapsed_time += (timer->current_time.tv_sec - timer->start_time.tv_sec) * 1000000000\
+     + (timer->current_time.tv_nsec - timer->start_time.tv_nsec);
     timer->count++;
 }
 
@@ -66,16 +64,43 @@ void free_global_timer(){
 
 void print_statistics(){
 
+    double unit;
+    const char* unit_name;
+    switch (global_timer->resolution) {
+        case SECONDS:
+            unit =  SECONDS;
+            unit_name = "s";
+            break;
+        case MILLISECONDS:
+            unit = MILLISECONDS;
+            unit_name = "ms";
+            break;
+        case MICROSECONDS:
+            unit = MICROSECONDS;
+            unit_name = "us";
+            break;
+        case NANOSECONDS:
+        default:
+            unit = NANOSECONDS;
+            unit_name = "ns";
+            break;
+    }
+
     char separator[76];
     memset(separator, '-', 75);
     separator[75] = '\0';
     printf("%-50s\n", separator);
-    printf("| %-20s | %20s | %20s | %15s |\n", "Timer Name", "Total Time", "Avg. Time", "Count");
+    printf("| %-20s | %16s (%2s)| %16s (%2s)| %15s |\n", "Timer Name", "Total Time",unit_name, "Avg. Time",unit_name ,"Count");
     printf("%-75s\n", separator);
 
     for (int i=0;i<global_timer->num_timers;i++){
         global_timer->timers[i].time_mean =(double) global_timer->timers[i].elapsed_time/global_timer->timers[i].count;
-        printf("| %-20s | %20ld | %20.1f | %15d |\n", global_timer->timers[i].name, global_timer->timers[i].elapsed_time, global_timer->timers[i].time_mean, global_timer->timers[i].count);
+
+        printf("| %-20s | %20.1f | %20.1f | %15d |\n", 
+            global_timer->timers[i].name, 
+                global_timer->timers[i].elapsed_time / unit, 
+                    global_timer->timers[i].time_mean /unit,
+                        global_timer->timers[i].count);
         printf("%-75s\n", separator);
     }
 }
