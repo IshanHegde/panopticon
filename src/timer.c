@@ -66,12 +66,17 @@ void free_global_timer(){
 
 void print_statistics(){
 
+    char separator[76];
+    memset(separator, '-', 75);
+    separator[75] = '\0';
+    printf("%-50s\n", separator);
+    printf("| %-20s | %20s | %20s | %15s |\n", "Timer Name", "Total Time", "Avg. Time", "Count");
+    printf("%-75s\n", separator);
+
     for (int i=0;i<global_timer->num_timers;i++){
         global_timer->timers[i].time_mean =(double) global_timer->timers[i].elapsed_time/global_timer->timers[i].count;
-        printf("%s: \n",global_timer->timers[i].name);
-        printf("Total Time: %ld\n",global_timer->timers[i].elapsed_time);
-        printf("Average Time: %.1f\n",global_timer->timers[i].time_mean);
-        printf("Count: %d\n", global_timer->timers[i].count);
+        printf("| %-20s | %20ld | %20.1f | %15d |\n", global_timer->timers[i].name, global_timer->timers[i].elapsed_time, global_timer->timers[i].time_mean, global_timer->timers[i].count);
+        printf("%-75s\n", separator);
     }
 }
 
