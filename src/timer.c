@@ -68,20 +68,20 @@ void print_statistics(){
     const char* unit_name;
     switch (global_timer->resolution) {
         case SECONDS:
-            unit =  SECONDS;
+            unit =  1000*1000*1000;
             unit_name = "s";
             break;
         case MILLISECONDS:
-            unit = MILLISECONDS;
+            unit = 1000*1000;
             unit_name = "ms";
             break;
         case MICROSECONDS:
-            unit = MICROSECONDS;
+            unit = 1000;
             unit_name = "us";
             break;
         case NANOSECONDS:
         default:
-            unit = NANOSECONDS;
+            unit = 1;
             unit_name = "ns";
             break;
     }
@@ -99,7 +99,7 @@ void print_statistics(){
         printf("| %-20s | %20.1f | %20.1f | %15d |\n", 
             global_timer->timers[i].name, 
                 global_timer->timers[i].elapsed_time / unit, 
-                    global_timer->timers[i].time_mean /unit,
+                    global_timer->timers[i].time_mean / unit,
                         global_timer->timers[i].count);
         printf("%-75s\n", separator);
     }
