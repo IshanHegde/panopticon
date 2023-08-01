@@ -23,6 +23,18 @@ extern "C"
         }\
     };\
 
+enum CLOCK_TYPE {
+    CLOCK_MONOTONIC_RAW,
+    CLOCK_PROCESS_CPUTIME_ID,
+    CLOCK_THREAD_CPUTIME_ID
+};
+
+#define CLOCK_TYPES { \
+    CLOCK_MONOTONIC_RAW, \
+    CLOCK_PROCESS_CPUTIME_ID, \
+    CLOCK_THREAD_CPUTIME_ID \
+}
+
 enum TIME_RESOLUTION{
     SECONDS         =         1,
     MILLISECONDS    =         1000,
@@ -38,6 +50,7 @@ struct Global_Timer{
     double total_time;
     size_t num_timers;
     enum TIME_RESOLUTION resolution;
+    clockid_t clock_type;
 };
 
 extern struct Global_Timer* global_timer;
@@ -58,7 +71,7 @@ void watch_stop(struct Timer * timer);
 
 void alloc_timer(char * name);
 
-void alloc_global_timer(enum TIME_RESOLUTION resolution);
+void alloc_global_timer(enum TIME_RESOLUTION resolution,clockid_t clock_type);
 
 void watch(char * name);
 
@@ -68,8 +81,8 @@ void print_statistics();
 
 void exit_functions();
 
-#define GLOBAL_TIMER(resolution) \
-    alloc_global_timer(resolution); \
+#define GLOBAL_TIMER(resolution, clock_type) \
+    alloc_global_timer(resolution, clock_type); \
     atexit(exit_functions);\
 
 #ifdef __cplusplus

@@ -2,13 +2,24 @@
 
 struct Global_Timer* global_timer = NULL;
 
-void alloc_global_timer(enum TIME_RESOLUTION resolution){
+
+/**
+ * Allocate a new global timer with the specified resolution and clock type.
+ *
+ * @param resolution The time resolution for the timer.
+ * @param clock_type The clock type to use for timing measurements.
+ *                  Valid values are: @enum{CLOCK_TYPES}
+ * @param timer_ptr  A pointer to a pointer to a Global_Timer struct to allocate.
+ * @return           void. 
+ */
+void alloc_global_timer(enum TIME_RESOLUTION resolution,clockid_t clock_type){
 
     global_timer = (struct Global_Timer *)malloc(sizeof(struct Global_Timer));
     global_timer->num_timers =0;
     global_timer->timers =NULL;
     global_timer->total_time =0.0;
     global_timer->resolution = resolution;
+    global_timer->clock_type = clock_type;
 }
 
 void alloc_timer(char *name) {
@@ -16,7 +27,7 @@ void alloc_timer(char *name) {
     global_timer->num_timers++;
     global_timer->timers = (struct Timer*) realloc(global_timer->timers, global_timer->num_timers * sizeof(struct Timer));
     struct Timer *timer = &(global_timer->timers[global_timer->num_timers - 1]);
-    clock_gettime(CLOCK_MONOTONIC_RAW, &timer->start_time);
+    clock_gettime(global_timer->clock_type, &timer->start_time);
     timer->name = (char*) malloc(strlen(name) + 1);
     strcpy(timer->name, name);
     timer->elapsed_time = 0;
@@ -26,12 +37,12 @@ void alloc_timer(char *name) {
 
 void watch_update(struct Timer * timer){
 
-    clock_gettime(CLOCK_MONOTONIC_RAW, &timer->start_time);    
+    clock_gettime(global_timer->clock_type, &timer->start_time);    
 }
 
 void watch_stop(struct Timer * timer){
 
-    clock_gettime(CLOCK_MONOTONIC_RAW, &timer->current_time);
+    clock_gettime(global_timer->clock_type, &timer->current_time);
     timer->elapsed_time += (timer->current_time.tv_sec - timer->start_time.tv_sec) * 1000000000\
      + (timer->current_time.tv_nsec - timer->start_time.tv_nsec);
     timer->count++;
