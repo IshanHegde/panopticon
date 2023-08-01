@@ -23,17 +23,6 @@ extern "C"
         }\
     };\
 
-enum CLOCK_TYPE {
-    CLOCK_MONOTONIC_RAW,
-    CLOCK_PROCESS_CPUTIME_ID,
-    CLOCK_THREAD_CPUTIME_ID
-};
-
-#define CLOCK_TYPES { \
-    CLOCK_MONOTONIC_RAW, \
-    CLOCK_PROCESS_CPUTIME_ID, \
-    CLOCK_THREAD_CPUTIME_ID \
-}
 
 enum TIME_RESOLUTION{
     SECONDS         =         1,

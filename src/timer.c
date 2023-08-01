@@ -8,9 +8,8 @@ struct Global_Timer* global_timer = NULL;
  *
  * @param resolution The time resolution for the timer.
  * @param clock_type The clock type to use for timing measurements.
- *                  Valid values are: @enum{CLOCK_TYPES}
- * @param timer_ptr  A pointer to a pointer to a Global_Timer struct to allocate.
- * @return           void. 
+ *                  Valid values are: @enum{CLOCK_MONOTONIC_RAW, CLOCK_PROCESS_CPUTIME_ID, CLOCK_THREAD_CPUTIME_ID}
+ * @return           Void. 
  */
 void alloc_global_timer(enum TIME_RESOLUTION resolution,clockid_t clock_type){
 
