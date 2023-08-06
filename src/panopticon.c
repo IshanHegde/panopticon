@@ -13,7 +13,7 @@ struct Global_Timer* global_timer = NULL;
  */
 void alloc_global_timer(enum TIME_RESOLUTION resolution,clockid_t clock_type){
 
-    global_timer = (struct Global_Timer *)malloc(sizeof(struct Global_Timer));
+    global_timer = malloc(sizeof(struct Global_Timer));
     global_timer->num_timers =0;
     global_timer->timers =NULL;
     global_timer->total_time =0.0;
@@ -24,7 +24,7 @@ void alloc_global_timer(enum TIME_RESOLUTION resolution,clockid_t clock_type){
 void alloc_timer(const char *name,const struct timespec * watch_time) {
 
     global_timer->num_timers++;
-    global_timer->timers = (struct Timer*) realloc(global_timer->timers, global_timer->num_timers * sizeof(struct Timer));
+    global_timer->timers =  realloc(global_timer->timers, global_timer->num_timers * sizeof(struct Timer));
     struct Timer *timer = &(global_timer->timers[global_timer->num_timers - 1]);
     timer->start_time = *(watch_time);
     timer->name = (char*) malloc(strlen(name) + 1);
