@@ -9,7 +9,7 @@ Jump to: [Installing](#installing)
 
 # Usage
 
-Note that the timer will always measure the time in nanosecond resolution. The resolution passed below is just for how the results are displayed.
+
 
 ```c
 // This will initialize the global timer that will print time in Milliseconds and use a Wall time clock
@@ -58,7 +58,9 @@ for (int i =0;i< 100000;i++){
 ```
 ## Details
 
-The timer was measured to take ~540 nanoseconds on average (N=100,000) to measure the time of an empty code block on ```Ryzen 9 6900HX```, ```16 GB RAM``` and ```Ubuntu 22.04 LTS```. 
+The timer will always measure the time in nanosecond resolution. The resolution passed below is just for how the results are displayed.
+
+The timer was measured to take ```~540``` nanoseconds on average ```(N=100,000)``` to measure the time of an empty code block on ```Ryzen 9 6900HX```, ```16 GB RAM``` and ```Ubuntu 22.04 LTS```. 
 
 This time is only of concern if nested timers are used as shown above. **Only the outer loop will be affected by this overhead.**
 
