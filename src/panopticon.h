@@ -36,7 +36,7 @@ struct Global_Timer{
     clockid_t clock_type;
 };
 
-extern struct Global_Timer* global_timer;
+extern struct Global_Timer global_timer;
 
 struct Timer{
     struct timespec start_time;
