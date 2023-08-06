@@ -1,11 +1,16 @@
 #include <panopticon.h>
+#include <unistd.h>
 
 int main(){
 
-    GLOBAL_TIMER(MILLISECONDS,CLOCK_PROCESS_CPUTIME_ID)
-    WATCH("main")
+    GLOBAL_TIMER(MICROSECONDS,CLOCK_MONOTONIC)
+    
     srand(time(NULL));
     
+    WATCH("sleep_time")
+    sleep(1);
+    STOP_WATCH("sleep_time")
+
     int j =0;
 
     for (int i =0;i< 100000;i++){
@@ -23,6 +28,6 @@ int main(){
         STOP_WATCH("outer_loop")
     }
 
-    STOP_WATCH("main")
+    
     return 0;
 }

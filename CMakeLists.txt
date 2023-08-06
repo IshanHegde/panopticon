@@ -10,8 +10,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D_POSIX_C_SOURCE=200809L")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -D_POSIX_C_SOURCE=200809L -D_GNU_SOURCE")
 
 
-
-add_compile_options(-O3 -march=native -mtune=native -flto )
+add_compile_options(-Wall -Werror -pedantic -O3 -march=native -mtune=native -flto )
 
 set(LIBRARY_SOURCES src/panopticon.c)
 
