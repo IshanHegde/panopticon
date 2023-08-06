@@ -1,4 +1,4 @@
-#include <panopticon.h>
+#include "panopticon.h"
 
 struct Global_Timer* global_timer = NULL;
 
@@ -112,22 +112,22 @@ void print_statistics(){
             break;
     }
 
-    char separator[76];
-    memset(separator, '-', 75);
-    separator[75] = '\0';
+    char separator[81];
+    memset(separator, '-', 80);
+    separator[80] = '\0';
     printf("%-50s\n", separator);
-    printf("| %-20s | %16s (%2s)| %16s (%2s)| %15s |\n", "Timer Name", "Total Time",unit_name, "Avg. Time",unit_name ,"Count");
-    printf("%-75s\n", separator);
+    printf("| %-20s | %12s (%2s)| %12s (%2s)| %15s |\n", "Timer Name", "Total Time",unit_name, "Avg. Time",unit_name ,"Count");
+    printf("%-80s\n", separator);
 
     for (int i=0;i<global_timer->num_timers;i++){
         global_timer->timers[i].time_mean =(double) global_timer->timers[i].elapsed_time/global_timer->timers[i].count;
 
-        printf("| %-20s | %20.1f | %20.1f | %15d |\n", 
+        printf("| %-20s | %16.1f | %16.3f | %15d |\n", 
             global_timer->timers[i].name, 
                 global_timer->timers[i].elapsed_time / unit, 
                     global_timer->timers[i].time_mean / unit,
                         global_timer->timers[i].count);
-        printf("%-75s\n", separator);
+        printf("%-80s\n", separator);
     }
 }
 
