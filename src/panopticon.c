@@ -1,4 +1,4 @@
-#include "timer.h"
+#include <panopticon.h>
 
 struct Global_Timer* global_timer = NULL;
 

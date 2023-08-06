@@ -1,10 +1,9 @@
-#ifndef TIMER_H
-#define TIMER_H
+#ifndef PANOPTICON_H
+#define PANOPTICON_H
 #include <time.h>
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include <sys/time.h>
 #include <stdint.h>
 #include <math.h>
 
@@ -75,4 +74,4 @@ void exit_functions();
 }
 #endif
 
-#endif 
+#endif // PANOPTICON_H
