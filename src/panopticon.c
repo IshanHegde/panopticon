@@ -21,7 +21,7 @@ void alloc_global_timer(enum TIME_RESOLUTION resolution,clockid_t clock_type){
     global_timer->clock_type = clock_type;
 }
 
-void alloc_timer(char *name,struct timespec * watch_time) {
+void alloc_timer(const char *name,const struct timespec * watch_time) {
 
     global_timer->num_timers++;
     global_timer->timers = (struct Timer*) realloc(global_timer->timers, global_timer->num_timers * sizeof(struct Timer));
@@ -34,12 +34,12 @@ void alloc_timer(char *name,struct timespec * watch_time) {
     timer->count = 0;
 }
 
-void watch_start_update(struct Timer * timer,struct timespec * watch_time){
+void watch_start_update(struct Timer * timer, const struct timespec * watch_time){
 
     timer->start_time = *(watch_time);
 }
 
-void watch_stop_update(struct Timer * timer,struct timespec * watch_time){
+void watch_stop_update(struct Timer * timer,const struct timespec * watch_time){
 
     timer->elapsed_time += (watch_time->tv_sec - timer->start_time.tv_sec) * 1000000000\
      + (watch_time->tv_nsec - timer->start_time.tv_nsec);
@@ -47,7 +47,7 @@ void watch_stop_update(struct Timer * timer,struct timespec * watch_time){
 }
 
 
-void watch(char * name){
+void watch(const char * name){
     // record the time first
     struct timespec watch_time;
     clock_gettime(global_timer->clock_type,&watch_time);
@@ -65,7 +65,7 @@ void watch(char * name){
     return;
 }
 
-void stop_watch(char * name){
+void stop_watch(const char * name){
     //record the time first and pass this time to the watch_stop_update function
     struct timespec watch_time;
     clock_gettime(global_timer->clock_type,&watch_time);

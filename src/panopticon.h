@@ -49,16 +49,16 @@ struct Timer{
 void alloc_global_timer(enum TIME_RESOLUTION resolution,clockid_t clock_type);
 
 // This updates the Timer's start_time 
-void watch_start_update(struct Timer * timer,struct timespec * watch_time);
+void watch_start_update(struct Timer * timer,const struct timespec * watch_time);
 
 // This updates the Timer's elapsed_time
-void watch_stop_update(struct Timer * timer,struct timespec * watch_time);
+void watch_stop_update(struct Timer * timer, const struct timespec * watch_time);
 
-void alloc_timer(char * name, struct timespec * watch_time);
+void alloc_timer(const char * name, const struct timespec * watch_time);
 
-void watch(char * name);
+void watch(const char * name);
 
-void stop_watch(char * name);
+void stop_watch(const char * name);
 
 void free_global_timer();
 
