@@ -21,12 +21,12 @@ void alloc_global_timer(enum TIME_RESOLUTION resolution,clockid_t clock_type){
     global_timer->clock_type = clock_type;
 }
 
-void alloc_timer(char *name) {
+void alloc_timer(char *name,struct timespec * watch_time) {
 
     global_timer->num_timers++;
     global_timer->timers = (struct Timer*) realloc(global_timer->timers, global_timer->num_timers * sizeof(struct Timer));
     struct Timer *timer = &(global_timer->timers[global_timer->num_timers - 1]);
-    clock_gettime(global_timer->clock_type, &timer->start_time);
+    timer->start_time = *(watch_time);
     timer->name = (char*) malloc(strlen(name) + 1);
     strcpy(timer->name, name);
     timer->elapsed_time = 0;
@@ -34,32 +34,48 @@ void alloc_timer(char *name) {
     timer->count = 0;
 }
 
-void watch_update(struct Timer * timer){
+void watch_start_update(struct Timer * timer,struct timespec * watch_time){
 
-    clock_gettime(global_timer->clock_type, &timer->start_time);    
+    timer->start_time = *(watch_time);
 }
 
-void watch_stop(struct Timer * timer){
+void watch_stop_update(struct Timer * timer,struct timespec * watch_time){
 
-    clock_gettime(global_timer->clock_type, &timer->current_time);
-    timer->elapsed_time += (timer->current_time.tv_sec - timer->start_time.tv_sec) * 1000000000\
-     + (timer->current_time.tv_nsec - timer->start_time.tv_nsec);
+    timer->elapsed_time += (watch_time->tv_sec - timer->start_time.tv_sec) * 1000000000\
+     + (watch_time->tv_nsec - timer->start_time.tv_nsec);
     timer->count++;
 }
 
 
 void watch(char * name){
+    // record the time first
+    struct timespec watch_time;
+    clock_gettime(global_timer->clock_type,&watch_time);
+
     // Update the timer if it is initialized
     for (int i = 0; i < global_timer->num_timers; i++) {
         if (strcmp(global_timer->timers[i].name, name) == 0){
             
-            watch_update(&global_timer->timers[i]);
+            watch_start_update(&global_timer->timers[i],&watch_time);
             return;
         }
     }
     // Initalize the timer if not initialized before
-    alloc_timer(name);
+    alloc_timer(name,&watch_time);
     return;
+}
+
+void stop_watch(char * name){
+    //record the time first and pass this time to the watch_stop_update function
+    struct timespec watch_time;
+    clock_gettime(global_timer->clock_type,&watch_time);
+
+    for (int i = 0; i < global_timer->num_timers; i++) {\
+        if (strcmp(global_timer->timers[i].name, name) == 0){
+            watch_stop_update(&global_timer->timers[i],&watch_time);
+            return;
+        }
+    }
 }
 
 void free_global_timer(){

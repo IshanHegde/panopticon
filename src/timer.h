@@ -15,13 +15,8 @@ extern "C"
 
 #define WATCH(name) watch(name);
 
-#define STOP_WATCH(input_name) \
-    for (int i = 0; i < global_timer->num_timers; i++) {\
-        if (strcmp(global_timer->timers[i].name, input_name) == 0){\
-            watch_stop(&global_timer->timers[i]);\
-            break;\
-        }\
-    };\
+#define STOP_WATCH(name) stop_watch(name);
+    
 
 
 enum TIME_RESOLUTION{
@@ -46,23 +41,25 @@ extern struct Global_Timer* global_timer;
 
 struct Timer{
     struct timespec start_time;
-    struct timespec current_time;
     uint64_t elapsed_time;
     char * name;
     double time_mean;
     int count;
 };
 
-
-void watch_update(struct Timer * timer);
-
-void watch_stop(struct Timer * timer);
-
-void alloc_timer(char * name);
-
 void alloc_global_timer(enum TIME_RESOLUTION resolution,clockid_t clock_type);
 
+// This updates the Timer's start_time 
+void watch_start_update(struct Timer * timer,struct timespec * watch_time);
+
+// This updates the Timer's elapsed_time
+void watch_stop_update(struct Timer * timer,struct timespec * watch_time);
+
+void alloc_timer(char * name, struct timespec * watch_time);
+
 void watch(char * name);
+
+void stop_watch(char * name);
 
 void free_global_timer();
 
