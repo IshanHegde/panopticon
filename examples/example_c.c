@@ -2,13 +2,13 @@
 
 int main(){
 
-    GLOBAL_TIMER(NANOSECONDS,CLOCK_PROCESS_CPUTIME_ID)
+    GLOBAL_TIMER(MILLISECONDS,CLOCK_PROCESS_CPUTIME_ID)
     WATCH("main")
     srand(time(NULL));
     
     int j =0;
 
-    for (int i =0;i< 1000000;i++){
+    for (int i =0;i< 100000;i++){
         WATCH("outer_loop")
 
         j+=4 +rand()%5 +9;

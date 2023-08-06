@@ -21,9 +21,9 @@ add_library(panopticon ${LIBRARY_SOURCES})
 target_include_directories(panopticon PUBLIC src)
 
 
-add_executable(test_c examples/test_c.c)
-target_link_libraries(test_c PRIVATE panopticon)
+add_executable(example_c examples/example_c.c)
+target_link_libraries(example_c PRIVATE panopticon)
 
 
-add_executable(test_cpp examples/test_cpp.cpp)
-target_link_libraries(test_cpp PRIVATE panopticon)
+add_executable(example_cpp examples/example_cpp.cpp)
+target_link_libraries(example_cpp PRIVATE panopticon)
