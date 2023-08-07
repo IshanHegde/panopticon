@@ -43,7 +43,7 @@ struct Timer{
     int count;
 };
 
-void alloc_global_timer(enum TIME_RESOLUTION resolution,clockid_t clock_type);
+void init_global_timer(enum TIME_RESOLUTION resolution,clockid_t clock_type);
 
 // This updates the Timer's start_time 
 void watch_start_update(struct Timer * timer,const struct timespec * watch_time);
@@ -64,7 +64,7 @@ void print_statistics();
 void exit_functions();
 
 #define GLOBAL_TIMER(resolution, clock_type) \
-    alloc_global_timer(resolution, clock_type); \
+    init_global_timer(resolution, clock_type); \
     atexit(exit_functions);\
 
 #ifdef __cplusplus

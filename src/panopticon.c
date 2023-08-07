@@ -15,7 +15,7 @@ struct Global_Timer global_timer;
  *                  Valid values are: @enum{CLOCK_MONOTONIC_RAW, CLOCK_PROCESS_CPUTIME_ID, CLOCK_THREAD_CPUTIME_ID}
  * @return           Void. 
  */
-void alloc_global_timer(enum TIME_RESOLUTION resolution,clockid_t clock_type){
+void init_global_timer(enum TIME_RESOLUTION resolution,clockid_t clock_type){
 
     global_timer.num_timers =0;
     global_timer.timers =NULL;
