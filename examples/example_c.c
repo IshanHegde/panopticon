@@ -1,6 +1,7 @@
 #include <panopticon.h>
 #include <unistd.h>
 
+
 int main(){
 
     GLOBAL_TIMER(MICROSECONDS,CLOCK_MONOTONIC)

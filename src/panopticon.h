@@ -1,12 +1,9 @@
 #ifndef PANOPTICON_H
 #define PANOPTICON_H
-#include <time.h>
-#include <string.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <stdint.h>
-#include <math.h>
 
+#include <time.h>
+#include <stdint.h>
+#include <stdlib.h>
 #ifdef __cplusplus
 extern "C"
 {

@@ -1,4 +1,8 @@
+#include <string.h>
+#include <stdio.h>
+#include <math.h>
 #include "panopticon.h"
+
 
 struct Global_Timer global_timer;
 
